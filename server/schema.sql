@@ -11,10 +11,10 @@ CREATE TABLE messages (
    * room
   */
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  text VARCHAR(),
-  creator VARCHAR(),
+  text VARCHAR(120),
+  creator VARCHAR(30),
   date DATE,
-  room VARCHAR()
+  room VARCHAR(30)
 );
 
 CREATE TABLE USERS (
@@ -23,7 +23,7 @@ CREATE TABLE USERS (
    * username
   */
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR()
+  name VARCHAR(30)
 );
 
   /* BUDDIES TABLE (2-column table) (EC?)
