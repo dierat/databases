@@ -17,7 +17,7 @@ CREATE TABLE messages (
   room VARCHAR(30)
 );
 
-CREATE TABLE USERS (
+CREATE TABLE users (
   /* USERS TABLE
    * userid (do we have to make this?)
    * username
