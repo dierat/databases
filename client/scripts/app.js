@@ -36,10 +36,9 @@ app.fetch = function() {
   // should implement a GET request via ajax
   $.get( "/classes/messages", function( data ) {
     var arr = JSON.parse(data).results;
-    console.log("data = ", data);
-    var arr = data.results;
+    console.log("data received by the client = ", data);
 
-    arr.forEach.reverse(function(message) { 
+    arr.reverse().forEach(function(message) { 
 
       var roomname = cleanMe(message.roomname);
       var username = cleanMe(message.username);
