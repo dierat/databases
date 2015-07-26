@@ -3,10 +3,6 @@ var bluebird = require('bluebird');
 var express = require('express');
 var db = require('../db');
 
-
-var testObject = '{"results":[{"username":"diedra","text":"msg","roomname":"lobby","createdAt":"2015-07-22T03:29:25.925Z","objectId":0},{"username":"diedra","text":"A SPECIAL MESSAGE JUST FOR YOU","roomname":"lobby","createdAt":"2015-07-22T03:32:01.512Z","objectId":1},{"username":"diedra","text":"YET ANOTHER AMAZING MESSAGE","roomname":"lobby","createdAt":"2015-07-22T03:35:09.059Z","objectId":338},{"username":"diedra","text":"CAN YOU SEE THIS NATE","roomname":"lobby","createdAt":"2015-07-22T03:37:26.418Z","objectId":588}]}';
-
-
 module.exports = {
   messages: {
     // a function which handles a get request for all messages
@@ -26,14 +22,44 @@ module.exports = {
     }, 
     // a function which handles posting a message to the database
     post: function (req, res) {
+
+      var dbConnection = db.chatConnection();
       console.log("req.body = ", req.body);
+      //look at username (users.get?), get the id,  if not in Users Table, add it (users.post?)
+      var idFromUsers = "select id from users where username = '" + req.body.username +"'";
+      console.log("req.body.username = ", req.body.username);
+      //var idFromUsers = "select * from users";
+
+      dbConnection.query(idFromUsers, function(err, rows){
+        if (err){
+          // console.log('----->rows: ', rows);
+          console.log('error! ', err);
+        }
+        if (!rows.length){
+          //if rows is empty, add req.body.username to User
+          console.log('----->rows: ', rows);
+          var name = {
+            username: req.body.username,
+            updatedAt: new Date(),
+            createdAt: new Date()
+          };
+          dbConnection.query("insert into users set ?",name, function(err){
+            if (err){
+              console.log(err);
+            } else {
+              console.log('success in posting username to usertable');
+            }
+          });
+        } else {
+          console.log("rows = ", rows);
+        }
+      });
       var post = {
-        username: req.body.username,
+        username: req.body.username, //this should be gotten from users table
         text: req.body.text,
         roomname: req.body.roomname,
         createdAt: new Date()
       };
-      var dbConnection = db.chatConnection();
       dbConnection.query("insert into messages set ?", post, function(err){
         if (err){
           console.log(err);
