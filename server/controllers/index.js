@@ -28,7 +28,6 @@ module.exports = {
       //look at username (users.get?), get the id,  if not in Users Table, add it (users.post?)
       var idFromUsers = "select id from users where username = '" + req.body.username +"'";
       console.log("req.body.username = ", req.body.username);
-      //var idFromUsers = "select * from users";
 
       dbConnection.query(idFromUsers, function(err, rows){
         if (err){
@@ -55,7 +54,8 @@ module.exports = {
         }
       });
       var post = {
-        username: req.body.username, //this should be gotten from users table
+        // should insert id from users table
+        username: req.body.username,
         text: req.body.text,
         roomname: req.body.roomname,
         createdAt: new Date()
